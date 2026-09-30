@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FormulaX | Engineering Formula Solver</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+
+    <script async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+
+    <!-- Function Plot -->
+    <script src="https://cdn.jsdelivr.net/npm/function-plot@1.25.1/dist/function-plot.js"></script>
+
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- ============================= -->
+<!-- LOGIN SCREEN -->
+<!-- ============================= -->
+
+<div id="authScreen" class="auth-screen">
+
+    <div class="auth-decoration decoration-one"></div>
+    <div class="auth-decoration decoration-two"></div>
+
+    <div class="auth-card">
+
+        <div class="logo auth-logo">
+            <span>∑</span>
+            FormulaX
+        </div>
+
+        <p class="auth-subtitle">
+            Engineering Mathematics Workspace
+        </p>
+
+        <!-- Login -->
+        <div id="loginForm">
+
+            <h2>Welcome Back</h2>
+
+            <p class="muted">
+                Sign in to access your formula vault.
+            </p>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="student@example.com"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+
+                <div class="password-wrapper">
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter password"
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword('loginPassword')"
+                    >
+                        👁
+                    </button>
+                </div>
+            </div>
+
+            <button class="primary-btn full-btn" onclick="login()">
+                Login
+            </button>
+
+            <p class="switch-text">
+                Don't have an account?
+                <button onclick="showRegister()">Create one</button>
+            </p>
+
+        </div>
+
+
+        <!-- Register -->
+
+        <div id="registerForm" class="hidden">
+
+            <h2>Create Account</h2>
+
+            <p class="muted">
+                Build your personalized engineering workspace.
+            </p>
+
+            <div class="input-group">
+                <label>Name</label>
+
+                <input
+                    type="text"
+                    id="registerName"
+                    placeholder="Your name"
+                >
+            </div>
+
+            <div class="input-group">
+
+                <label>Email</label>
+
+                <input
+                    type="email"
+                    id="registerEmail"
+                    placeholder="student@example.com"
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Create password"
+                >
+
+            </div>
+
+            <button
+                class="primary-btn full-btn"
+                onclick="register()"
+            >
+                Create Account
+            </button>
+
+            <p class="switch-text">
+
+                Already have an account?
+
+                <button onclick="showLogin()">
+                    Login
+                </button>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- MAIN APPLICATION -->
+<!-- ============================= -->
+
+<div id="app" class="app hidden">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <div class="logo">
+                <span>∑</span>
+                FormulaX
+            </div>
+
+            <button
+                class="mobile-close"
+                onclick="toggleSidebar()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav>
+
+            <button
+                class="nav-item active"
+                data-section="dashboard"
+                onclick="showSection('dashboard')"
+            >
+                <span>⌂</span>
+                Dashboard
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="formulas"
+                onclick="showSection('formulas')"
+            >
+                <span>∑</span>
+                Formula Vault
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="solver"
+                onclick="showSection('solver')"
+            >
+                <span>⚙</span>
+                Interactive Solver
+            </button>
+
+            <button class="nav-item" data-section="units" onclick="showSection('units')">
+                <span>↔</span>
+                Unit Converter
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="labcoach"
+                onclick="showSection('labcoach')"
+            >
+                <span>🧪</span>
+                Lab Coach
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="plotter"
+                onclick="showSection('plotter')"
+            >
+                <span>⌁</span>
+                Function Plotter
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="matrix"
+                onclick="showSection('matrix')"
+            >
+                <span>▦</span>
+                Matrix Calculator
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="derivative"
+                onclick="showSection('derivative')"
+            >
+                <span>∂</span>
+                Derivative
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="practice"
+                onclick="showSection('practice')"
+            >
+                <span>✦</span>
+                Practice Mode
+            </button>
+
+            <button
+                class="nav-item"
+                data-section="cheatsheet"
+                onclick="showSection('cheatsheet')"
+            >
+                <span>★</span>
+                My Cheat Sheet
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="user-mini">
+
+                <div class="avatar" id="sidebarAvatar">
+                    U
+                </div>
+
+                <div>
+                    <strong id="sidebarName">
+                        User
+                    </strong>
+
+                    <small>
+                        Engineering Student
+                    </small>
+                </div>
+
+            </div>
+
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+                ⇥ Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <button
+                class="menu-btn"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <div>
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+                <p id="pageSubtitle">
+                    Your engineering mathematics workspace
+                </p>
+
+            </div>
+
+            <div class="top-user">
+
+                <div
+                    class="avatar"
+                    id="topAvatar"
+                >
+                    U
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ============================= -->
+        <!-- DASHBOARD -->
+        <!-- ============================= -->
+
+        <section id="dashboard" class="section active-section">
+
+            <div class="welcome-card">
+
+                <div>
+
+                    <span class="eyebrow">
+                        ENGINEERING MATH
+                    </span>
+
+                    <h2>
+                        Turn formulas into solutions.
+                    </h2>
+
+                    <p>
+                        Search formulas, solve equations,
+                        plot functions and build your personal
+                        engineering cheat sheet.
+                    </p>
+
+                    <button
+                        class="primary-btn"
+                        onclick="showSection('formulas')"
+                    >
+                        Explore Formula Vault →
+                    </button>
+
+                </div>
+
+                <div class="hero-symbol">
+                    ∫
+                </div>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">∑</div>
+                    <strong id="formulaCount">0</strong>
+                    <span>Formulas</span>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">★</div>
+                    <strong id="savedCount">0</strong>
+                    <span>Saved Formulas</span>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">⚡</div>
+                    <strong>6</strong>
+                    <span>Interactive Tools</span>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">∞</div>
+                    <strong>24/7</strong>
+                    <span>Study Access</span>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <h3>Quick Tools</h3>
+                            <p>Jump directly into calculations.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="quick-tools">
+
+                        <button onclick="showSection('solver')">
+                            <span>⚙</span>
+                            <strong>Equation Solver</strong>
+                            <small>Find unknown variables</small>
+                        </button>
+
+                        <button onclick="showSection('labcoach')">
+                            <span>🧪</span>
+                            <strong>Engineering Lab Coach</strong>
+                            <small>Analyze real experiment readings</small>
+                        </button>
+
+                        <button onclick="showSection('plotter')">
+                            <span>⌁</span>
+                            <strong>Function Plotter</strong>
+                            <small>Visualize equations</small>
+                        </button>
+
+                        <button onclick="showSection('matrix')">
+                            <span>▦</span>
+                            <strong>Matrix Solver</strong>
+                            <small>Determinants & eigenvalues</small>
+                        </button>
+
+                        <button onclick="showSection('derivative')">
+                            <span>∂</span>
+                            <strong>Derivative</strong>
+                            <small>Polynomial derivatives</small>
+                        </button>
+
+                        <button onclick="showSection('practice')">
+                            <span>✦</span>
+                            <strong>Formula Practice</strong>
+                            <small>Learn by recalling, not just reading</small>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-heading">
+
+                        <div>
+                            <h3>Popular Topics</h3>
+                            <p>Frequently used engineering formulas.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="topic-list">
+
+                        <button onclick="filterTopic('Calculus')">
+                            <span>∫</span>
+                            <div>
+                                <strong>Calculus</strong>
+                                <small>Derivatives & integrals</small>
+                            </div>
+                        </button>
+
+                        <button onclick="filterTopic('Physics')">
+                            <span>F</span>
+                            <div>
+                                <strong>Physics</strong>
+                                <small>Motion & energy</small>
+                            </div>
+                        </button>
+
+                        <button onclick="filterTopic('Electrical')">
+                            <span>Ω</span>
+                            <div>
+                                <strong>Electrical</strong>
+                                <small>Voltage & circuits</small>
+                            </div>
+                        </button>
+
+                        <button onclick="filterTopic('Thermodynamics')">
+                            <span>Δ</span>
+                            <div>
+                                <strong>Thermodynamics</strong>
+                                <small>Heat & work</small>
+                            </div>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================= -->
+        <!-- FORMULA VAULT -->
+        <!-- ============================= -->
+
+        <section id="formulas" class="section">
+
+            <div class="section-intro">
+
+                <div>
+
+                    <span class="eyebrow">
+                        KNOWLEDGE BASE
+                    </span>
+
+                    <h2>
+                        Formula Vault
+                    </h2>
+
+                    <p>
+                        Search hundreds of engineering formulas
+                        by topic or keyword.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel formula-scanner">
+                <div class="scanner-copy"><span class="scanner-icon">▧</span><div><h3>Scan a formula from your notes</h3><p>Take a photo or choose an image. Review the recognized text, then search it in your Formula Vault.</p><small>Recognition runs in your browser. The OCR engine and language data load from a CDN.</small></div></div>
+                <div class="scanner-controls">
+                    <label class="secondary-btn scanner-file-label" for="formulaImage">📷 Choose photo / take picture</label>
+                    <input id="formulaImage" type="file" accept="image/*" capture="environment" onchange="previewFormulaImage(event)" class="hidden">
+                    <button id="scanFormulaButton" class="primary-btn" type="button" onclick="scanFormulaImage()" disabled>Scan formula</button>
+                </div>
+                <div class="scanner-preview-wrap"><img id="formulaPreview" class="scanner-preview hidden" alt="Preview of the selected formula image"><span id="scannerStatus" aria-live="polite">Choose a clear, well-lit image with the formula in focus.</span></div>
+                <label class="scanner-result-label" for="scannedFormula">Recognized text (edit OCR mistakes here)</label>
+                <textarea id="scannedFormula" class="scanned-formula" rows="2" placeholder="The scanned formula will appear here"></textarea>
+                <div class="scanner-actions"><button class="secondary-btn" type="button" onclick="searchScannedFormula()">Search Formula Vault</button><button class="secondary-btn" type="button" onclick="plotScannedFormula()">Try in Function Plotter</button></div>
+            </div>
+
+            <details class="panel custom-formula-panel">
+                <summary><span class="custom-formula-plus">＋</span><span><strong>Can’t find your formula? Add it to your personal vault.</strong><small>Save a formula, its topic, and an optional book or reference link.</small></span></summary>
+                <div class="custom-formula-fields">
+                    <div class="input-group"><label for="customFormulaName">Formula name</label><input id="customFormulaName" type="text" maxlength="70" placeholder="e.g. Bernoulli’s equation"></div>
+                    <div class="input-group"><label for="customFormulaCategory">Topic</label><select id="customFormulaCategory"><option>Calculus</option><option>Linear Algebra</option><option>Physics</option><option>Electrical</option><option>Thermodynamics</option></select></div>
+                    <div class="input-group custom-formula-equation"><label for="customFormulaLatex">Formula (LaTeX or plain text)</label><input id="customFormulaLatex" type="text" maxlength="180" placeholder="e.g. p + ½ρv² + ρgh = constant"><small>For fractions, you can type LaTeX such as \frac{a}{b}.</small></div>
+                    <div class="input-group custom-formula-equation"><label for="customFormulaDescription">What does it calculate?</label><input id="customFormulaDescription" type="text" maxlength="180" placeholder="Short explanation to help you remember it"></div>
+                    <div class="input-group custom-formula-equation"><label for="customFormulaReference">Reference link (optional)</label><input id="customFormulaReference" type="url" placeholder="https://…"></div>
+                    <button class="primary-btn" type="button" onclick="addCustomFormula()">Add to my Formula Vault</button>
+                </div>
+                <p class="custom-formula-note">Personal formulas are saved in this browser. They appear in your vault and cheat sheet; they are not automatically connected to the interactive solver.</p>
+            </details>
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    id="formulaSearch"
+                    type="text"
+                    placeholder="Search formulas... e.g. Ohm's law, kinetic energy"
+                    oninput="renderFormulas()"
+                >
+
+            </div>
+
+
+            <div class="category-tabs">
+
+                <button
+                    class="category active"
+                    onclick="setCategory('All', this)"
+                >
+                    All
+                </button>
+
+                <button
+                    class="category"
+                    onclick="setCategory('Calculus', this)"
+                >
+                    Calculus
+                </button>
+
+                <button
+                    class="category"
+                    onclick="setCategory('Linear Algebra', this)"
+                >
+                    Linear Algebra
+                </button>
+
+                <button
+                    class="category"
+                    onclick="setCategory('Physics', this)"
+                >
+                    Physics
+                </button>
+
+                <button
+                    class="category"
+                    onclick="setCategory('Electrical', this)"
+                >
+                    Electrical
+                </button>
+
+                <button
+                    class="category"
+                    onclick="setCategory('Thermodynamics', this)"
+                >
+                    Thermodynamics
+                </button>
+
+            </div>
+
+
+            <div
+                id="formulaGrid"
+                class="formula-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- ============================= -->
+        <!-- SOLVER -->
+        <!-- ============================= -->
+
+        <section id="solver" class="section">
+
+            <div class="section-intro">
+
+                <span class="eyebrow">
+                    INTERACTIVE TOOL
+                </span>
+
+                <h2>
+                    Formula Solver
+                </h2>
+
+                <p>
+                    Choose a formula, enter known values, and select the variable to calculate.
+                </p>
+
+            </div>
+
+
+            <div class="panel random-challenge-panel">
+                <div class="challenge-heading"><div><span class="eyebrow">QUICK PRACTICE</span><h3>Random Formula Challenge</h3><p>Get a fresh engineering problem with values generated for you.</p></div><div class="challenge-streak" id="challengeStreak">🏁 0 solved</div></div>
+                <div id="challengeQuestion" class="challenge-question">Press <strong>New challenge</strong> when you’re ready to solve one.</div>
+                <div id="challengeKnownValues" class="challenge-known-values"></div>
+                <div class="challenge-controls"><div class="input-group challenge-answer-group"><label for="challengeAnswer">Your answer</label><input id="challengeAnswer" type="number" step="any" inputmode="decimal" placeholder="Enter your answer" onkeydown="if(event.key==='Enter') checkRandomChallenge()"></div><button class="primary-btn" type="button" onclick="checkRandomChallenge()">Check answer</button><button class="secondary-btn" type="button" onclick="showChallengeHint()">Show working</button><button class="secondary-btn" type="button" onclick="createRandomChallenge()">New challenge ↻</button></div>
+                <div id="challengeFeedback" class="challenge-feedback" aria-live="polite"></div>
+            </div>
+
+            <div class="solver-layout">
+
+                <div class="panel solver-panel">
+
+                    <div class="input-group">
+                        <label for="solverFormula">Formula</label>
+                        <select id="solverFormula" onchange="renderSolverFormula()"></select>
+                    </div>
+
+                    <div id="solverEquation" class="formula-display"></div>
+                    <p id="solverDescription" class="muted"></p>
+                    <div class="solver-target-row input-group">
+                        <label for="solverTarget">Calculate</label>
+                        <select id="solverTarget" onchange="renderSolverInputs()"></select>
+                    </div>
+                    <div id="solverFields" class="solver-fields"></div>
+
+                    <button class="primary-btn" onclick="solveSelectedFormula()">Calculate value</button>
+
+
+                    <div
+                        id="solverResult"
+                        class="result-box hidden"
+                    ></div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <h3>How it works</h3>
+
+                    <div class="steps">
+
+                        <div class="step">
+
+                            <span>1</span>
+
+                            <div>
+                                <strong>Choose a formula</strong>
+                                <p>Select a formula from physics, calculus, electrical, and engineering.</p>
+                            </div>
+
+                        </div>
+
+                        <div class="step">
+
+                            <span>2</span>
+
+                            <div>
+                                <strong>Choose the unknown</strong>
+                                <p>Pick the variable you want the solver to calculate.</p>
+                            </div>
+
+                        </div>
+
+                        <div class="step">
+
+                            <span>3</span>
+
+                            <div>
+                                <strong>Enter known values</strong>
+                                <p>Fill the remaining fields to calculate your result.</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================= -->
+        <!-- PLOTTER -->
+        <!-- ============================= -->
+
+        <section id="plotter" class="section">
+
+            <div class="section-intro">
+
+                <span class="eyebrow">
+                    VISUALIZATION
+                </span>
+
+                <h2>
+                    Function Plotter
+                </h2>
+
+                <p>
+                    Visualize mathematical functions interactively.
+                </p>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="plot-controls">
+
+                    <div class="input-group">
+
+                        <label>
+                            Function f(x)
+                        </label>
+
+                        <input
+                            id="functionInput"
+                            value="sin(x)"
+                            placeholder="e.g. x^2, x³, x^3, sin(x)"
+                            onkeydown="if(event.key==='Enter') plotFunction()"
+                        >
+
+                    </div>
+
+                    <button
+                        class="primary-btn"
+                        onclick="plotFunction()"
+                    >
+                        Plot Function
+                    </button>
+
+                </div>
+
+                <div
+                    id="plot"
+                    class="plot-area"
+                ></div>
+
+                <div class="plot-presets" aria-label="Example functions">
+                    <span>Examples:</span>
+                    <button type="button" onclick="usePlotExample('x^2')">Parabola y = x²</button>
+                    <button type="button" onclick="usePlotExample('circle')">Circle x² + y² = 25</button>
+                    <button type="button" onclick="usePlotExample('x^3')">Cube y = x³</button>
+                    <button type="button" onclick="usePlotExample('sin(x)')">Sine y = sin(x)</button>
+                </div>
+                <p class="plot-hint">Use <code>^</code> for powers (for example <code>x^2</code>, <code>x^3</code>), or type superscripts such as <code>x²</code>/<code>x³</code>. Circle is plotted as both upper and lower semicircles.</p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================= -->
+        <!-- ENGINEERING LAB COACH -->
+        <section id="labcoach" class="section">
+            <div class="section-intro">
+                <span class="eyebrow">FROM MEASUREMENTS TO MEANING</span>
+                <h2>Engineering Lab Coach</h2>
+                <p>Enter real readings. FormulaX checks the trend, fits a line, and explains what the result means.</p>
+            </div>
+
+            <div class="lab-layout">
+                <div class="panel lab-input-panel">
+                    <div class="input-group">
+                        <label for="labExperiment">Choose an experiment</label>
+                        <select id="labExperiment" onchange="setLabExperiment()">
+                            <option value="ohm">Ohm’s law · Find resistance</option>
+                            <option value="pendulum">Simple pendulum · Estimate gravity</option>
+                            <option value="hooke">Hooke’s law · Find spring constant</option>
+                        </select>
+                    </div>
+                    <div id="labGuide" class="lab-guide"></div>
+
+                    <div class="lab-table-wrap">
+                        <table class="lab-table">
+                            <thead><tr><th id="labXHeading">Current (A)</th><th id="labYHeading">Voltage (V)</th><th></th></tr></thead>
+                            <tbody id="labRows"></tbody>
+                        </table>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="secondary-btn" type="button" onclick="addLabRow()">+ Add reading</button>
+                        <button class="secondary-btn" type="button" onclick="loadLabSample()">Load sample data</button>
+                    </div>
+                    <details class="csv-import">
+                        <summary>Paste readings from a spreadsheet</summary>
+                        <p class="muted">Paste two columns separated by commas or tabs. Each row should contain x first, then y. A header row is okay.</p>
+                        <textarea id="labCsv" rows="4" placeholder="Current (A), Voltage (V)&#10;0.1, 1.0&#10;0.2, 2.0"></textarea>
+                        <button class="secondary-btn" type="button" onclick="importLabCsv()">Load pasted readings</button>
+                    </details>
+                    <button class="primary-btn lab-analyze" type="button" onclick="analyzeLab()">Analyze experiment</button>
+                </div>
+
+                <div class="panel lab-graph-panel">
+                    <div class="panel-heading"><div><h3>Measurement trend</h3><p id="labGraphCaption">Measured voltage versus current</p></div></div>
+                    <canvas id="labChart" aria-label="Experiment readings and best-fit line"></canvas>
+                    <div id="labResult" class="lab-result empty-lab-result">Your result and interpretation will appear here.</div>
+                    <button id="saveLabRunButton" class="secondary-btn hidden" type="button" onclick="saveLabRun()">Save to Lab Notebook</button>
+                    <button id="labReportButton" class="secondary-btn hidden" type="button" onclick="downloadLabReport()">Download lab report</button>
+                </div>
+            </div>
+            <div class="lab-note"><strong>Use SI units.</strong> Enter current in A, voltage in V, length in m, time in s, force in N, and extension in m. The coach preserves your readings and never removes a point automatically.</div>
+            <div class="panel lab-notebook-panel">
+                <div class="panel-heading"><div><h3>My Lab Notebook</h3><p>Save results and return to the readings later. Stored on this device.</p></div></div>
+                <div id="labNotebook" class="lab-notebook-list"></div>
+            </div>
+        </section>
+
+        <!-- FORMULA PRACTICE -->
+        <section id="practice" class="section">
+            <div class="section-intro">
+                <span class="eyebrow">RECALL BUILDS UNDERSTANDING</span>
+                <h2>Formula Practice</h2>
+                <p>Practice recognizing formulas from their meaning. Get a hint, learn from each answer, and keep your progress on this device.</p>
+            </div>
+            <div class="practice-layout">
+                <div class="panel practice-card">
+                    <div class="practice-topline"><span id="practiceRound">Ready when you are</span><span id="practiceStreak">🔥 0 streak</span></div>
+                    <div id="practicePrompt" class="practice-prompt"><div class="practice-icon">✦</div><h3>Can you recall the right formula?</h3><p>Choose an answer from the formula vault and build your recall one question at a time.</p></div>
+                    <div id="practiceChoices" class="practice-choices"></div>
+                    <div id="practiceFeedback" class="practice-feedback" aria-live="polite"></div>
+                    <div class="practice-actions"><button id="practiceHintButton" class="secondary-btn" onclick="showPracticeHint()">Show hint</button><button id="practiceStartButton" class="primary-btn" onclick="startFormulaPractice()">Start practice</button><button id="practiceNextButton" class="primary-btn hidden" onclick="startFormulaPractice()">Next question →</button></div>
+                </div>
+                <div class="panel practice-stats">
+                    <span class="eyebrow">YOUR PROGRESS</span>
+                    <div class="practice-score-grid"><div><strong id="practiceAccuracy">0%</strong><small>Accuracy</small></div><div><strong id="practiceCorrect">0</strong><small>Correct</small></div><div><strong id="practiceAttempts">0</strong><small>Answered</small></div></div>
+                    <div class="practice-tip"><strong>Study tip</strong><p>Try to recall the formula before revealing the choices. Understanding what each variable represents makes formulas easier to remember.</p></div>
+                    <button class="secondary-btn" onclick="resetPracticeProgress()">Reset my progress</button>
+                    <div id="weakTopicResources" class="weak-topic-resources"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MATRIX -->
+        <!-- ============================= -->
+
+        <section id="matrix" class="section">
+
+            <div class="section-intro">
+
+                <span class="eyebrow">
+                    LINEAR ALGEBRA
+                </span>
+
+                <h2>
+                    3 × 3 Matrix Calculator
+                </h2>
+
+                <p>
+                    Calculate determinants and eigenvalues.
+                </p>
+
+            </div>
+
+
+            <div class="matrix-layout">
+
+                <div class="panel">
+
+                    <div
+                        id="matrixInputs"
+                        class="matrix-inputs"
+                    ></div>
+
+                    <div class="button-row">
+
+                        <button
+                            class="primary-btn"
+                            onclick="calculateMatrix()"
+                        >
+                            Calculate
+                        </button>
+
+                        <button
+                            class="secondary-btn"
+                            onclick="clearMatrix()"
+                        >
+                            Clear
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <h3>Result</h3>
+
+                    <div
+                        id="matrixResult"
+                        class="matrix-result"
+                    >
+                        Enter matrix values and calculate.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================= -->
+        <!-- DERIVATIVE -->
+        <!-- ============================= -->
+
+        <section id="derivative" class="section">
+
+            <div class="section-intro">
+
+                <span class="eyebrow">
+                    CALCULUS
+                </span>
+
+                <h2>
+                    Polynomial Derivative
+                </h2>
+
+                <p>
+                    Calculate derivatives of polynomial functions.
+                </p>
+
+            </div>
+
+
+            <div class="panel derivative-panel">
+
+                <div class="input-group">
+
+                    <label>
+                        Polynomial
+                    </label>
+
+                    <input
+                        id="polynomial"
+                        placeholder="Example: 3x^3 + 2x^2 - 5x + 7"
+                    >
+
+                </div>
+
+                <button
+                    class="primary-btn"
+                    onclick="calculateDerivative()"
+                >
+                    Differentiate
+                </button>
+
+
+                <div
+                    id="derivativeResult"
+                    class="result-box hidden"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================= -->
+        <!-- CHEAT SHEET -->
+        <!-- ============================= -->
+
+        <section id="cheatsheet" class="section">
+
+            <div class="section-intro">
+
+                <span class="eyebrow">
+                    PERSONAL STUDY DECK
+                </span>
+
+                <h2>
+                    My Cheat Sheet
+                </h2>
+
+                <p>
+                    Save important formulas for quick revision.
+                </p>
+
+            </div>
+
+
+            <div
+                id="cheatSheetGrid"
+                class="formula-grid"
+            ></div>
+
+
+            <div class="export-box">
+
+                <div>
+
+                    <h3>
+                        Export Study Sheet
+                    </h3>
+
+                    <p>
+                        Generate a printable PDF of your saved formulas.
+                    </p>
+
+                </div>
+
+                <button
+                    class="primary-btn"
+                    onclick="exportPDF()"
+                >
+                    Download PDF
+                </button>
+
+            </div>
+
+        </section>
+
+        <section id="units" class="section">
+            <div class="section-intro">
+                <span class="eyebrow">QUICK CONVERSION</span>
+                <h2>Unit Converter</h2>
+                <p>Convert common science and everyday measurements instantly.</p>
+            </div>
+
+            <div class="panel unit-converter-panel">
+                <div class="unit-category-row">
+                    <label for="unitCategory">Measurement type</label>
+                    <select id="unitCategory" aria-label="Measurement type"></select>
+                </div>
+                <div class="unit-fields">
+                    <label class="unit-field" for="unitInputValue">
+                        <span>Convert from</span>
+                        <input id="unitInputValue" type="number" step="any" value="1" inputmode="decimal" placeholder="Enter a value">
+                        <select id="unitFrom" aria-label="Convert from unit"></select>
+                    </label>
+                    <button id="unitSwap" class="unit-swap-btn" type="button" aria-label="Swap units" title="Swap units">⇄</button>
+                    <label class="unit-field" for="unitTo">
+                        <span>Convert to</span>
+                        <output id="unitOutputValue" class="unit-output" aria-live="polite">—</output>
+                        <select id="unitTo" aria-label="Convert to unit"></select>
+                    </label>
+                </div>
+                <div class="unit-result-row">
+                    <p id="unitResultText" aria-live="polite">Enter a value to see the conversion.</p>
+                    <button id="unitCopy" class="secondary-btn" type="button">Copy result</button>
+                </div>
+                <p class="unit-converter-note">Temperature conversions account for the different zero points. Other conversions use standard unit ratios.</p>
+            </div>
+            <div class="unit-category-chips" aria-label="Available conversion types">
+                <span>Length</span><span>Mass</span><span>Time</span><span>Temperature</span><span>Area</span><span>Volume</span><span>Speed</span><span>Pressure</span><span>Energy</span>
+            </div>
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+<div id="helperWidget" class="helper-widget">
+    <section id="helperPanel" class="helper-panel hidden" aria-label="FormulaX helper chat">
+        <header class="helper-header"><div><strong>FormulaX Helper</strong><small>Study guide · messages stay in this page</small></div><button type="button" aria-label="Close helper" onclick="toggleHelper()">×</button></header>
+        <div id="helperMessages" class="helper-messages" aria-live="polite"><div class="helper-message bot-message">Hi! I can guide you through the solver, graphing, formula scanning, Lab Coach, or a random challenge. What are you working on?</div></div>
+        <div class="helper-suggestions"><button onclick="askHelper('How do I use Lab Coach?')">Lab Coach</button><button onclick="askHelper('How do I scan a formula?')">Scan formula</button><button onclick="askHelper('Give me a random challenge')">Challenge</button></div>
+        <form class="helper-input-row" onsubmit="sendHelperMessage(event)"><input id="helperInput" type="text" autocomplete="off" placeholder="Ask FormulaX Helper…" aria-label="Ask FormulaX Helper"><button type="submit" aria-label="Send message">➤</button></form>
+    </section>
+    <button id="helperLauncher" class="helper-launcher" type="button" aria-label="Open FormulaX Helper" onclick="toggleHelper()"><span>✦</span> Help</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+<script src="script.js"></script>
+<script src="api.js"></script>
+
+</body>
+</html>

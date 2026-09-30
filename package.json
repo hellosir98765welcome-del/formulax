@@ -1,0 +1,8 @@
+{
+  "name": "formulax",
+  "version": "1.0.0",
+  "description": "FormulaX - Engineering Formula Solver (full-stack)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=22.5.0" }
+}

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" fill="none">
+  <defs>
+    <linearGradient id="wash" x1="0" y1="0" x2="1600" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff7ed"/><stop offset=".48" stop-color="#fffbeb"/><stop offset="1" stop-color="#f0fdf4"/>
+    </linearGradient>
+    <radialGradient id="a"><stop stop-color="#ef4444" stop-opacity=".24"/><stop offset="1" stop-color="#ef4444" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b"><stop stop-color="#fbbf24" stop-opacity=".24"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" stroke="#9a5b35" stroke-opacity=".07"/></pattern>
+  </defs>
+  <path fill="url(#wash)" d="M0 0h1600v1000H0z"/>
+  <ellipse cx="1330" cy="140" rx="440" ry="350" fill="url(#a)"/>
+  <ellipse cx="220" cy="850" rx="480" ry="360" fill="url(#b)"/>
+  <path fill="url(#grid)" d="M0 0h1600v1000H0z"/>
+  <g stroke="#9a4b32" stroke-opacity=".17" stroke-width="2">
+    <circle cx="1300" cy="380" r="118"/><ellipse cx="1300" cy="380" rx="118" ry="44" transform="rotate(-35 1300 380)"/>
+    <path d="M1160 690c70-130 140-130 210 0s140 130 210 0M1110 760h500M1360 560v245"/>
+    <path d="M190 170h180M280 80v180M215 105l130 130M345 105 215 235"/>
+    <path d="M150 510h180v130H150zM190 550h100M190 585h65"/>
+    <path d="M1390 120l92 160h-184l92-160Z"/>
+  </g>
+  <g fill="#991b1b" fill-opacity=".19" font-family="Georgia,serif" font-size="38">
+    <text x="1170" y="190">∫ f(x) dx</text><text x="120" y="740">E = mc²</text>
+    <text x="1390" y="590">π</text><text x="350" y="390">∑</text>
+  </g>
+</svg>
