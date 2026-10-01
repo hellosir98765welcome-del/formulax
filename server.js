@@ -11,7 +11,7 @@ const PUBLIC_DIR = path.join(__dirname, "public");
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
 // ---------- Database ----------
-const db = new DatabaseSync(path.join(DATA_DIR, "formulax.db"));
+const db = new DatabaseSync(process.env.DB_PATH || path.join(__dirname, "formulax.db"));
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
